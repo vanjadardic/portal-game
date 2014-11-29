@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>test</title>
+      <script type="text/javascript" src="matter-0.8.0.js"></script>
+   </head>
+   <body>
+      <div id="canvas-container"></div>
+      <script>
+
+         var container = document.getElementById('canvas-container');
+         var engine = Matter.Engine.create(container);
+
+
+
+
+         engine.world.gravity.y = 1;
+         
+         var renderOptions = engine.render.options;
+        renderOptions.wireframes = true;
+        renderOptions.hasBounds = false;
+        renderOptions.showDebug = true;
+        renderOptions.showBroadphase = false;
+        renderOptions.showBounds = true;
+        renderOptions.showVelocity = true;
+        renderOptions.showCollisions = true;
+        renderOptions.showAxes = true;
+        renderOptions.showPositions = false;
+        renderOptions.showAngleIndicator = true;
+        renderOptions.showIds = false;
+        renderOptions.showShadows = false;
+        renderOptions.background = '#fff';
+
+         Input = {};
+         Input.keyCodes = {
+            W: 87,
+            A: 65,
+            S: 83,
+            D: 68
+         };
+
+         Matter.World.add(engine.world, Matter.Bodies.rectangle(175, 55, 250, 10, {isStatic: true, density: 1.0, friction: 10.0, restitution: 0.0}));
+         Matter.World.add(engine.world, Matter.Bodies.rectangle(295, 175, 10, 250, {isStatic: true, density: 1.0, friction: 10.0, restitution: 0.0}));
+         Matter.World.add(engine.world, Matter.Bodies.rectangle(175, 295, 250, 10, {isStatic: true, density: 1.0, friction: 10.0, restitution: 0.0}));
+         Matter.World.add(engine.world, Matter.Bodies.rectangle(55, 175, 10, 250, {isStatic: true, density: 1.0, friction: 10.0, restitution: 0.0}));
+         var player = Matter.Bodies.rectangle(100, 100, 10, 20, {isStatic: false, density: 1.0, friction: 10.0, restitution: 0.0});
+         Matter.World.add(engine.world, player);
+
+
+         document.addEventListener('keydown', function(e) {
+            console.log('keydown', e.keyCode);
+            if (e.keyCode === Input.keyCodes.D) {
+               Matter.Body.applyForce(player, {x: 0, y: 0}, {x: 0.1, y: 0});
+            }
+            if (e.keyCode === Input.keyCodes.A) {
+               Matter.Body.applyForce(player, {x: 0, y: 0}, {x: -0.1, y: 0});
+            }
+         }, true);
+         document.addEventListener('keyup', function(e) {
+            if (e.keyCode === Input.keyCodes.D) {
+
+            }
+         }, true);
+
+         //Matter.Engine.update(engine, 100);
+
+//
+         Matter.Engine.run(engine);
+
+      </script>
+   </body>
+</html>
+
+

@@ -1,0 +1,37 @@
+<html>
+   <body>
+      <canvas id="idCanvas" width="640" height="400" style="border: 4px solid red; background-color: black;"></canvas>
+      <script>
+         var ctx = document.getElementById('idCanvas').getContext('2d');
+
+         ctx.setTransform(1, 0, 0, 1, 220, 128);
+
+         ctx.beginPath();
+         ctx.moveTo(100, 10048);
+         ctx.lineTo(100, -9928);
+         ctx.lineTo(20076, -9928);
+         ctx.lineTo(20076, 10048);
+         ctx.clip();
+
+         ctx.beginPath();
+         ctx.moveTo(-9860, 6048);
+         ctx.lineTo(10100, -5928);
+         ctx.lineTo(-1876, -25888);
+         ctx.lineTo(-21836, -13912);
+         ctx.clip();
+
+         ctx.fillStyle = '#400';
+         ctx.fillRect(-10000, -10000, 20000, 20000);
+
+         ctx.transform(1, 0, 0, -1, -120, 120);
+
+         ctx.beginPath();
+         ctx.moveTo(200, 100);
+         ctx.lineTo(230, 250);
+         ctx.lineTo(190, 200);
+         ctx.fillStyle = '#888';
+         ctx.fill();
+      </script>
+   </body>
+</html>
+

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>test</title>
+      <script src="p2.js" type="text/javascript"></script>
+   </head>
+   <body>
+      <canvas id="gameCanvas" width="640" height="400" style="border: 4px solid red; cursor: none; background-color: white;"></canvas>
+      <script>
+var ctx = document.getElementById('gameCanvas').getContext('2d');
+         // Setup our world
+         var world = new p2.World({gravity: [0, -9.82]});
+Util={};
+
+Util.setTransform = function(ctx, matrix) {
+   ctx.setTransform(matrix[0][0], matrix[1][0], matrix[0][1], matrix[1][1], matrix[0][2], matrix[1][2]);
+};
+
+Util.setTransform(ctx, [
+   [10, 0, 200],
+   [0, -10, 200],
+   [0, 0, 1]
+]);
+// Create a circle
+         var radius = 1,
+            circleShape = new p2.Circle(radius),
+            circleBody = new p2.Body({mass: 5, position: [0, 10]});
+         circleBody.addShape(circleShape),
+            circleShape2 = new p2.Circle(radius),
+            circleBody2 = new p2.Body({mass: 5, position: [1, 14]});
+         circleBody2.addShape(circleShape2);
+
+// Create a plane
+         var groundShape = new p2.Plane(),
+            groundBody = new p2.Body({mass: 0});
+         groundBody.addShape(groundShape);
+
+// Add the bodies to the world
+         world.addBody(circleBody);
+         world.addBody(circleBody2);
+         world.addBody(groundBody);
+
+// Step the simulation
+         setInterval(function() {
+            world.step(1.0 / 60.0);
+            ctx.clearRect(-1000,-1000,2000,2000);
+            ctx.beginPath();
+            ctx.arc(circleBody.position[0],circleBody.position[1],radius,0,2*Math.PI);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(circleBody2.position[0],circleBody2.position[1],radius,0,2*Math.PI);
+            ctx.stroke();
+            
+            
+            
+            //console.log("Circle y position: " + circleBody.position[1]);
+         }, 1000.0 / 60.0);
+
+      </script>
+   </body>
+</html>
+
+
