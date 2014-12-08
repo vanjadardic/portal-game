@@ -2,12 +2,14 @@
 
 /**
  * @param {Point[]} points Endpoints of a portal.
- * @param {String} color Color of the portal.
+ * @param {Number} id Identificator of the portal, 0 for blue, 1 for yellow.
+ * @param {String} color Override default color for this type of portal.
  * @constructor
  */
-function Portal(points, color) {
+function Portal(points, id, color) {
    this.points = points;
-   this.color = color;
+   this.id = id;
+   this.color = color || (this.id === 0 ? 'blue' : 'yellow');
 }
 
 /**
@@ -27,7 +29,7 @@ Portal.prototype.clone = function() {
    for (var i = 0; i < points.length; i++) {
       points[i] = points[i].clone();
    }
-   return new Portal(points, this.color);
+   return new Portal(points, this.id);
 };
 
 /**

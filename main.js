@@ -19,11 +19,11 @@ var pallete = [
    "#b00", "#0b0", "#00b", "#bb0", "#b0b", "#0bb",
    "#400", "#040", "#004", "#440", "#404", "#044"];
 
-var world;
-var time;
-var p2 = p2 || undefined;
-var circleBody;
-var rectBody;
+//var world;
+//var time;
+//var p2 = p2 || undefined;
+//var circleBody;
+//var rectBody;
 window.onload = function() {
    G.ctx = document.getElementById("gameCanvas").getContext('2d');
 
@@ -31,30 +31,32 @@ window.onload = function() {
    G.easeAngle = null;
    G.easeScalex = null;
    G.easeScaley = null;
-   //portalContext.setPortal('b', [new Point(100, 60), new Point(120, 60)], G.player.position);
+   //portalContext.setPortal(0, [new Point(100, 60), new Point(120, 60)], G.player.position);
    G.width = document.getElementById("gameCanvas").clientWidth;
    G.height = document.getElementById("gameCanvas").clientHeight;
 
-   world = new p2.World({gravity: [0, -9.82]});
-   var rectShape = new p2.Rectangle(20, 0.5);
-   rectBody = new p2.Body({mass: 0, position: [10, 0.25]});
-   rectBody.addShape(rectShape);
-   var circleShape = new p2.Circle(1);
-   circleBody = new p2.Body({mass: 5, position: [10, 10]});
-   circleBody.addShape(circleShape);
-   world.addBody(rectBody);
-   world.addBody(circleBody);
-   time = new Date().getTime();
+//   world = new p2.World({gravity: [0, -9.82]});
+//   var rectShape = new p2.Rectangle(20, 0.5);
+//   rectBody = new p2.Body({mass: 0, position: [10, 0.25]});
+//   rectBody.addShape(rectShape);
+//   var circleShape = new p2.Circle(1);
+//   circleBody = new p2.Body({mass: 5, position: [10, 10]});
+//   circleBody.addShape(circleShape);
+//   world.addBody(rectBody);
+//   world.addBody(circleBody);
+//   time = new Date().getTime();
    start();
 };
 
 G.map = [
-   new MapPart(new Polygon([new Point(0, 0), new Point(20, 0), new Point(20, 0.5), new Point(0, 0.5)]), 'W'),
-   new MapPart(new Polygon([new Point(20, 0), new Point(20, 20), new Point(19.5, 20), new Point(19.5, 0)]), 'W'),
-   new MapPart(new Polygon([new Point(0, 19.5), new Point(20, 19.5), new Point(20, 20), new Point(0, 20)]), 'W'),
-   new MapPart(new Polygon([new Point(0.5, 0), new Point(0.5, 20), new Point(0, 20), new Point(0, 0)]), 'W'),
-   new MapPart(new Polygon([new Point(5, 0), new Point(25, 0), new Point(25, 5)]), 'W'),
-   new MapPart(new Polygon([new Point(0, 10), new Point(0, 25), new Point(2, 25)]), 'W')
+   new MapPart(new Polygon([new Point(0, 0), new Point(20, 0), new Point(20, 0.5), new Point(0, 0.5)]), MapPart.type.SOLID),
+   new MapPart(new Polygon([new Point(20, 0), new Point(20, 20), new Point(19.5, 20), new Point(19.5, 0)]), MapPart.type.SOLID),
+   new MapPart(new Polygon([new Point(0, 19.5), new Point(20, 19.5), new Point(20, 20), new Point(0, 20)]), MapPart.type.SOLID),
+   new MapPart(new Polygon([new Point(0.5, 0), new Point(0.5, 20), new Point(0, 20), new Point(0, 0)]), MapPart.type.SOLID),
+   new MapPart(new Polygon([new Point(5, 0.5), new Point(25, 0.5), new Point(25, 5)]), MapPart.type.SOLID),
+   new MapPart(new Polygon([new Point(0, 10), new Point(0, 25), new Point(2, 25)]), MapPart.type.SOLID),
+   new MapPart(new Polygon([new Point(12, 15), new Point(13, 5), new Point(11, 5)]), MapPart.type.SOLID),
+   new MapPart(new Polygon([new Point(9, 10), new Point(9, 3), new Point(10, 5)]), MapPart.type.SOLID)
 ];
 
 var portalContext = new PortalContext();
@@ -101,7 +103,7 @@ var drawPortalMap = function(portal, playerPosition, howMany) {
    }
    G.ctx.restore();
    for (var i = 0; i < portalLines.length; i++) {
-      Util.drawLine(G.ctx, [portalLines[i][0], portalLines[i][1]], Portal.width, portal.c);
+      Util.drawLine(G.ctx, [portalLines[i][0], portalLines[i][1]], Portal.default.width, portal.color);
    }
    G.ctx.restore();
    portal.draw(G.ctx);
@@ -109,10 +111,10 @@ var drawPortalMap = function(portal, playerPosition, howMany) {
 
 function checkPortalPassed(p, moveSegment) {
    var poi;
-   if (p.p[0].almostEquals(moveSegment.point1) || p.p[0].almostEquals(moveSegment.point2) ||
-      p.p[1].almostEquals(moveSegment.point1) || p.p[1].almostEquals(moveSegment.point2) ||
-      whichSidePoint(p.p[0], p.p[1], G.player.position) !== -1 ||
-      !(poi = intersectLSLS(new LineSegment(p.p[0], p.p[1]), moveSegment))) {
+   if (p.points[0].almostEquals(moveSegment.point1) || p.points[0].almostEquals(moveSegment.point2) ||
+      p.points[1].almostEquals(moveSegment.point1) || p.points[1].almostEquals(moveSegment.point2) ||
+      whichSidePoint(p.points[0], p.points[1], G.player.position) !== -1 ||
+      !(poi = intersectLSLS(new LineSegment(p.points[0], p.points[1]), moveSegment))) {
       return;
    }
 
@@ -123,7 +125,7 @@ function checkPortalPassed(p, moveSegment) {
       easeAngle = Math.PI - p.calcs.theta;
       easeAngle += easeAngle <= -Math.PI ? 2 * Math.PI : (easeAngle > Math.PI ? -2 * Math.PI : 0);
    } else {
-      var eax = Math.PI+p.calcs.theta + 2 * p.calcs.alpha;
+      var eax = Math.PI + p.calcs.theta + 2 * p.calcs.alpha;
       eax += eax <= -Math.PI ? 2 * Math.PI : (eax > Math.PI ? -2 * Math.PI : 0);
       var eay = p.calcs.theta + 2 * p.calcs.alpha;
       eay += eay <= -Math.PI ? 2 * Math.PI : (eay > Math.PI ? -2 * Math.PI : 0);
@@ -133,16 +135,16 @@ function checkPortalPassed(p, moveSegment) {
 
    var animDuration = 500;
    if (Util.compareFloats(easeAngle, 0) !== 0) {
-      G.easeAngle = new EaseOutExpo(easeAngle, 0, animDuration);
+      G.easeAngle = new Easing(Easing.fnc.easeOutExpo, easeAngle, -easeAngle, animDuration);
       G.easeAngle.start();
    }
 
    if (p.calcs.mirror) {
       if (scaleX) {
-         G.easeScalex = new EaseOutExpo(-1, 1, animDuration);
+         G.easeScalex = new Easing(Easing.fnc.easeOutExpo, -1, 2, animDuration);
          G.easeScalex.start();
       } else {
-         G.easeScaley = new EaseOutExpo(-1, 1, animDuration);
+         G.easeScaley = new Easing(Easing.fnc.easeOutExpo, -1, 2, animDuration);
          G.easeScaley.start();
       }
    }
@@ -174,8 +176,8 @@ function start() {
    }
 
    if (portalContext.bothPortals() && moveSegment.point2 !== null && !moveSegment.samePoints()) {
-      checkPortalPassed(portalContext.portals['b'], moveSegment);
-      checkPortalPassed(portalContext.portals['y'], moveSegment);
+      checkPortalPassed(portalContext.portals[0], moveSegment);
+      checkPortalPassed(portalContext.portals[1], moveSegment);
    }
 
    var enlarge = 10;
@@ -190,11 +192,11 @@ function start() {
       if (portalEndpoints) {
          if (input.isMBLeft()) {
 
-            portalContext.setPortal('b', portalEndpoints, G.player.position);
+            portalContext.setPortal(0, portalEndpoints, G.player.position);
 
          }
          if (input.isMBRight()) {
-            portalContext.setPortal('y', portalEndpoints, G.player.position);
+            portalContext.setPortal(1, portalEndpoints, G.player.position);
 
          }
       }
@@ -203,21 +205,21 @@ function start() {
    var angle = 0;
    if (G.easeAngle !== null) {
       angle = G.easeAngle.getValue();
-      if (G.easeAngle.isFinished()) {
+      if (G.easeAngle.isComplete()) {
          G.easeAngle = null;
       }
    }
    var scalex = 1;
    if (G.easeScalex !== null) {
       scalex = G.easeScalex.getValue();
-      if (G.easeScalex.isFinished()) {
+      if (G.easeScalex.isComplete()) {
          G.easeScalex = null;
       }
    }
    var scaley = 1;
    if (G.easeScaley !== null) {
       scaley = G.easeScaley.getValue();
-      if (G.easeScaley.isFinished()) {
+      if (G.easeScaley.isComplete()) {
          G.easeScaley = null;
       }
    }
@@ -230,25 +232,25 @@ function start() {
    G.player.rotation = -angle;
 
    if (portalContext.bothPortals()) {
-      var howMany = 4;
-      portalContext.calculatePortal('b', G.player.position);
-      portalContext.calculatePortal('y', G.player.position);
-      if (portalContext.portals['b'].calcs.dist < portalContext.portals['y'].calcs.dist) {
-         drawPortalMap(portalContext.portals['y'], G.player.position, howMany);
-         drawPortalMap(portalContext.portals['b'], G.player.position, howMany);
+      var howMany = 2;
+      portalContext.calculatePortal(0, G.player.position);
+      portalContext.calculatePortal(1, G.player.position);
+      if (portalContext.portals[0].calcs.dist < portalContext.portals[1].calcs.dist) {
+         drawPortalMap(portalContext.portals[1], G.player.position, howMany);
+         drawPortalMap(portalContext.portals[0], G.player.position, howMany);
       } else {
-         drawPortalMap(portalContext.portals['b'], G.player.position, howMany);
-         drawPortalMap(portalContext.portals['y'], G.player.position, howMany);
+         drawPortalMap(portalContext.portals[0], G.player.position, howMany);
+         drawPortalMap(portalContext.portals[1], G.player.position, howMany);
       }
    } else {
-      if (portalContext.portals['b'])
-         portalContext.portals['b'].draw(G.ctx);
-      if (portalContext.portals['y'])
-         portalContext.portals['y'].draw(G.ctx);
+      if (portalContext.portals[0])
+         portalContext.portals[0].draw(G.ctx);
+      if (portalContext.portals[1])
+         portalContext.portals[1].draw(G.ctx);
    }
 
    if (portalEndpoints) {
-      var prt = new Portal(portalEndpoints, null, '#fff');
+      var prt = new Portal(portalEndpoints, -1, '#fff');
       prt.draw(G.ctx);
    }
    if (G.easeAngle === null && G.easeScalex === null && G.easeScaley === null) {
@@ -267,22 +269,22 @@ function start() {
 
 
 
-   var newTime = new Date().getTime();
-   world.step((newTime - time) / 1000);
-   time = newTime;
+//   var newTime = new Date().getTime();
+//   world.step((newTime - time) / 1000);
+//   time = newTime;
 
-   G.ctx.beginPath();
-   G.ctx.arc(circleBody.position[0], circleBody.position[1], 1, 0, 2 * Math.PI);
-   G.ctx.fillStyle = '#fff';
-   G.ctx.fill();
+//   G.ctx.beginPath();
+//   G.ctx.arc(circleBody.position[0], circleBody.position[1], 1, 0, 2 * Math.PI);
+//   G.ctx.fillStyle = '#fff';
+//   G.ctx.fill();
 
-   if (Math.random() < 0.05) {
+//   if (Math.random() < 0.05) {
 
 
 
       //console.log("Circle y position: " + circleBody.position[1]);
       //console.log("rect: " + rectBody.position[1]);
-   }
+//   }
    G.ctx.restore();
    requestAnimFrame(start);
 }

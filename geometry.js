@@ -19,7 +19,7 @@ function Point(x, y) {
  * 
  * @returns {Point}
  */
-Point.prototype.clone = function() {
+Point.prototype.clone = function () {
    return new Point(this.x, this.y);
 };
 
@@ -28,7 +28,7 @@ Point.prototype.clone = function() {
  * @param {Point} otherPoint
  * @returns {Boolean}
  */
-Point.prototype.equals = function(otherPoint) {
+Point.prototype.equals = function (otherPoint) {
    return this.x === otherPoint.x && this.y === otherPoint.y;
 };
 
@@ -38,7 +38,7 @@ Point.prototype.equals = function(otherPoint) {
  * @param {Number} e
  * @returns {Boolean}
  */
-Point.prototype.almostEquals = function(otherPoint, e) {
+Point.prototype.almostEquals = function (otherPoint, e) {
    return Util.compareFloats(this.x, otherPoint.x, e) === 0 && Util.compareFloats(this.y, otherPoint.y, e) === 0;
 };
 //</editor-fold>
@@ -65,7 +65,7 @@ function Line(a, b, c) {
  * 
  * @returns {Number}
  */
-Line.prototype.getSlope = function() {
+Line.prototype.getSlope = function () {
    return this.k || (this.k = -this.a / this.b);
 };
 
@@ -73,7 +73,7 @@ Line.prototype.getSlope = function() {
  * 
  * @returns {Number}
  */
-Line.prototype.getYIntercept = function() {
+Line.prototype.getYIntercept = function () {
    return this.n || (this.n = -this.c / this.b);
 };
 
@@ -81,7 +81,7 @@ Line.prototype.getYIntercept = function() {
  * 
  * @returns {Line}
  */
-Line.prototype.clone = function() {
+Line.prototype.clone = function () {
    return new Line(this.a, this.b, this.c);
 };
 //</editor-fold>
@@ -105,7 +105,7 @@ function LineSegment(point1, point2) {
  * 
  * @returns {Boolean}
  */
-LineSegment.prototype.samePoints = function() {
+LineSegment.prototype.samePoints = function () {
    return Util.compareFloats(this.point1.x, this.point2.x) === 0 && Util.compareFloats(this.point1.y, this.point2.y) === 0;
 };
 
@@ -113,7 +113,7 @@ LineSegment.prototype.samePoints = function() {
  * 
  * @returns {Line}
  */
-LineSegment.prototype.getLine = function() {
+LineSegment.prototype.getLine = function () {
    return this.line || (this.line = new Line(
       this.point2.y - this.point1.y,
       this.point1.x - this.point2.x,
@@ -124,7 +124,7 @@ LineSegment.prototype.getLine = function() {
  * 
  * @returns {LineSegment}
  */
-LineSegment.prototype.clone = function() {
+LineSegment.prototype.clone = function () {
    return new LineSegment(this.point1.clone(), this.point2.clone());
 };
 
@@ -134,7 +134,7 @@ LineSegment.prototype.clone = function() {
  * @param {Number} edge
  * @returns {LineSegment}
  */
-LineSegment.prototype.extendPoint = function(which, edge) {
+LineSegment.prototype.extendPoint = function (which, edge) {
    var point1 = which === 1 ? this.point1 : this.point2;
    var point2 = which === 1 ? this.point2 : this.point1;
    var dx = point2.x - point1.x;
@@ -152,7 +152,7 @@ LineSegment.prototype.extendPoint = function(which, edge) {
  * @param {Number} edge
  * @returns {LineSegment}
  */
-LineSegment.prototype.extend = function(edge) {
+LineSegment.prototype.extend = function (edge) {
    this.extendPoint(1, edge);
    this.extendPoint(2, edge);
    return this;
@@ -163,7 +163,7 @@ LineSegment.prototype.extend = function(edge) {
  * @param {Number} orientation
  * @returns {Polygon}
  */
-LineSegment.prototype.createSquare = function(orientation) {
+LineSegment.prototype.createSquare = function (orientation) {
    var p1 = this.point1.clone();
    var p2 = this.point2.clone();
    var p3 = new Point(p2.x + (p2.y - p1.y) * orientation, p2.y - (p2.x - p1.x) * orientation);
@@ -188,7 +188,7 @@ function Polygon(points) {
  * 
  * @returns {Line[]}
  */
-Polygon.prototype.getLineSegments = function() {
+Polygon.prototype.getLineSegments = function () {
    if (this.lines) {
       return this.lines;
    }
@@ -203,7 +203,7 @@ Polygon.prototype.getLineSegments = function() {
  * 
  * @returns {Polygon}
  */
-Polygon.prototype.clone = function() {
+Polygon.prototype.clone = function () {
    var newPoints = this.points.slice(0);
    for (var i = 0; i < newPoints.length; i++) {
       newPoints[i] = newPoints[i].clone();
@@ -282,6 +282,20 @@ function intersectLLS(line, lineSegment) {
 function intersectLSLS(lineSegment1, lineSegment2) {
    var poi = intersectLL(lineSegment1.getLine(), lineSegment2.getLine());
    if (poi === false) {
+      return false;
+   }
+   return (isPointInRect(lineSegment1.point1, lineSegment1.point2, poi) && isPointInRect(lineSegment2.point1, lineSegment2.point2, poi)) ? poi : false;
+}
+
+function intersectLSLSNotTouch(lineSegment1, lineSegment2) {
+   var poi = intersectLL(lineSegment1.getLine(), lineSegment2.getLine());
+   if (poi === false) {
+      return false;
+   }
+   if (Util.compareFloats(poi.x, lineSegment1.point1.x) === 0 && Util.compareFloats(poi.y, lineSegment1.point1.y) === 0 ||
+      Util.compareFloats(poi.x, lineSegment1.point2.x) === 0 && Util.compareFloats(poi.y, lineSegment1.point2.y) === 0 ||
+      Util.compareFloats(poi.x, lineSegment2.point1.x) === 0 && Util.compareFloats(poi.y, lineSegment2.point1.y) === 0 ||
+      Util.compareFloats(poi.x, lineSegment2.point2.x) === 0 && Util.compareFloats(poi.y, lineSegment2.point2.y) === 0) {
       return false;
    }
    return (isPointInRect(lineSegment1.point1, lineSegment1.point2, poi) && isPointInRect(lineSegment2.point1, lineSegment2.point2, poi)) ? poi : false;
@@ -421,7 +435,7 @@ function Circle(x, y, r) {
  * 
  * @returns {Circle}
  */
-Circle.prototype.clone = function() {
+Circle.prototype.clone = function () {
    return new Circle(this.x, this.y, this.r);
 };
 //</editor-fold>
