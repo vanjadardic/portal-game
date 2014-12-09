@@ -21,7 +21,7 @@ Portal.default = {
 };
 
 /**
- * Clones a {@link Portal} object.
+ * Clones a {@link Portal}.
  * @returns {Portal}
  */
 Portal.prototype.clone = function() {

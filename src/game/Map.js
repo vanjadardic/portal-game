@@ -1,43 +1,39 @@
 'use strict';
 
 /**
- * @param {Polygon} polygon Polygon that represents this map part.
- * @param {Object} type Type of the map part. Should be an object from {@link MapPart.type}.
- * @returns {MapPart}
+ * @param {MapPart} mapParts Array of {@link MapPart}s to initialize this {@link Map} with. Can be empty.
+ * @constructor
  */
-function MapPart(polygon, type) {
-   this.polygon = polygon;
-   this.type = type;
+function Map(mapParts) {
+   this.mapParts = mapParts || [];
 }
 
 /**
- * All types for the {@link MapPart} that are supported.
+ * Adds a {@link MapPart} to this {@Map}.
+ * @param {type} mapPart
  */
-MapPart.type = {
-   SOLID: {
-      color: '#888'
-   },
-   EMPTY: {
-      color: '#000'
+Map.prototype.addMapPart = function (mapPart) {
+   this.mapParts.push(mapPart);
+};
+
+/**
+ * Clones a {@link Map}.
+ * @returns {Map}
+ */
+Map.prototype.clone = function () {
+   var newMapParts = this.mapParts.slice(0);
+   for (var i = 0; i < newMapParts.length; i++) {
+      newMapParts[i] = newMapParts[i].clone();
    }
+   return new Map(newMapParts);
 };
 
 /**
- * Clones a {@link MapPart} object.
- * @returns {MapPart}
- */
-MapPart.prototype.clone = function () {
-   return new MapPart(this.polygon.clone(), this.type);
-};
-
-/**
- * Draws the {@link Portal} on the canvas.
+ * Draws the {@link Map} on the canvas.
  * @param ctx
- * @param {String} color Overrides color.
  */
-MapPart.prototype.draw = function (ctx, color) {
-   if (this.polygon.points.length < 3) {
-      return;
+Map.prototype.draw = function (ctx) {
+   for (var i = 0; i < this.mapParts.length; i++) {
+      this.mapParts[i].draw(ctx);
    }
-   Util.fillPolygon(ctx, this.polygon.points, color || this.type.color);
 };

@@ -61,12 +61,12 @@ PortalContext.getPortalPlaceholder = function(playerPosition, mousePosition, map
    var point;
    var dist = false;
    var lines;
-   for (var i = 0; i < map.length; i++) {
-      if (map[i].type !== MapPart.type.SOLID) {
+   for (var i = 0; i < map.mapParts.length; i++) {
+      if (map.mapParts[i].type !== MapPart.type.SOLID) {
          continue;
       }
-      for (var j = 0; j < map[i].polygon.getLineSegments().length; j++) {
-         var poi = intersectLLS(ls.getLine(), map[i].polygon.getLineSegments()[j]);
+      for (var j = 0; j < map.mapParts[i].polygon.getLineSegments().length; j++) {
+         var poi = intersectLLS(ls.getLine(), map.mapParts[i].polygon.getLineSegments()[j]);
          if (poi) {
             if (Util.compareFloats(playerPosition.x, mousePosition.x) === Util.compareFloats(playerPosition.x, poi.x) && Util.compareFloats(playerPosition.y, mousePosition.y) === Util.compareFloats(playerPosition.y, poi.y)) {
                var d = distancePP(playerPosition, poi);
@@ -74,9 +74,9 @@ PortalContext.getPortalPlaceholder = function(playerPosition, mousePosition, map
                if (dist === false || comp < 0) {
                   point = poi;
                   dist = d;
-                  lines = [map[i].polygon.getLineSegments()[j]];
+                  lines = [map.mapParts[i].polygon.getLineSegments()[j]];
                } else if (comp === 0) {
-                  lines.push(map[i].polygon.getLineSegments()[j]);
+                  lines.push(map.mapParts[i].polygon.getLineSegments()[j]);
                }
             }
          }
@@ -103,13 +103,13 @@ PortalContext.getPortalPlaceholder = function(playerPosition, mousePosition, map
       return;
    }
    L1:
-      for (var i = 0; i < map.length; i++) {
-      if (map[i].type !== MapPart.type.SOLID) {
+      for (var i = 0; i < map.mapParts.length; i++) {
+      if (map.mapParts[i].type !== MapPart.type.SOLID) {
          continue;
       }
-      for (var j = 0; j < map[i].polygon.getLineSegments().length; j++) {
-         if (line !== map[i].polygon.getLineSegments()[j]) {
-            var poi = intersectLSLSNotTouch(portalLineSegment, map[i].polygon.getLineSegments()[j]);
+      for (var j = 0; j < map.mapParts[i].polygon.getLineSegments().length; j++) {
+         if (line !== map.mapParts[i].polygon.getLineSegments()[j]) {
+            var poi = intersectLSLSNotTouch(portalLineSegment, map.mapParts[i].polygon.getLineSegments()[j]);
             if (poi !== false) {
                portalEndpoints = false;
                break L1;

@@ -19,11 +19,7 @@ var pallete = [
    "#b00", "#0b0", "#00b", "#bb0", "#b0b", "#0bb",
    "#400", "#040", "#004", "#440", "#404", "#044"];
 
-//var world;
-//var time;
-//var p2 = p2 || undefined;
-//var circleBody;
-//var rectBody;
+
 window.onload = function() {
    G.ctx = document.getElementById("gameCanvas").getContext('2d');
 
@@ -35,29 +31,19 @@ window.onload = function() {
    G.width = document.getElementById("gameCanvas").clientWidth;
    G.height = document.getElementById("gameCanvas").clientHeight;
 
-//   world = new p2.World({gravity: [0, -9.82]});
-//   var rectShape = new p2.Rectangle(20, 0.5);
-//   rectBody = new p2.Body({mass: 0, position: [10, 0.25]});
-//   rectBody.addShape(rectShape);
-//   var circleShape = new p2.Circle(1);
-//   circleBody = new p2.Body({mass: 5, position: [10, 10]});
-//   circleBody.addShape(circleShape);
-//   world.addBody(rectBody);
-//   world.addBody(circleBody);
-//   time = new Date().getTime();
+
    start();
 };
 
-G.map = [
-   new MapPart(new Polygon([new Point(0, 0), new Point(20, 0), new Point(20, 0.5), new Point(0, 0.5)]), MapPart.type.SOLID),
-   new MapPart(new Polygon([new Point(20, 0), new Point(20, 20), new Point(19.5, 20), new Point(19.5, 0)]), MapPart.type.SOLID),
-   new MapPart(new Polygon([new Point(0, 19.5), new Point(20, 19.5), new Point(20, 20), new Point(0, 20)]), MapPart.type.SOLID),
-   new MapPart(new Polygon([new Point(0.5, 0), new Point(0.5, 20), new Point(0, 20), new Point(0, 0)]), MapPart.type.SOLID),
-   new MapPart(new Polygon([new Point(5, 0.5), new Point(25, 0.5), new Point(25, 5)]), MapPart.type.SOLID),
-   new MapPart(new Polygon([new Point(0, 10), new Point(0, 25), new Point(2, 25)]), MapPart.type.SOLID),
-   new MapPart(new Polygon([new Point(12, 15), new Point(13, 5), new Point(11, 5)]), MapPart.type.SOLID),
-   new MapPart(new Polygon([new Point(9, 10), new Point(9, 3), new Point(10, 5)]), MapPart.type.SOLID)
-];
+G.map = new Map();
+G.map.addMapPart(new MapPart(new Polygon([new Point(0, 0), new Point(20, 0), new Point(20, 0.5), new Point(0, 0.5)]), MapPart.type.SOLID));
+G.map.addMapPart(new MapPart(new Polygon([new Point(20, 0), new Point(20, 20), new Point(19.5, 20), new Point(19.5, 0)]), MapPart.type.SOLID));
+G.map.addMapPart(new MapPart(new Polygon([new Point(0, 19.5), new Point(20, 19.5), new Point(20, 20), new Point(0, 20)]), MapPart.type.SOLID));
+G.map.addMapPart(new MapPart(new Polygon([new Point(0.5, 0), new Point(0.5, 20), new Point(0, 20), new Point(0, 0)]), MapPart.type.SOLID));
+G.map.addMapPart(new MapPart(new Polygon([new Point(5, 0.5), new Point(25, 0.5), new Point(25, 5)]), MapPart.type.SOLID));
+G.map.addMapPart(new MapPart(new Polygon([new Point(0, 10), new Point(0, 25), new Point(2, 25)]), MapPart.type.SOLID));
+G.map.addMapPart(new MapPart(new Polygon([new Point(12, 15), new Point(13, 5), new Point(11, 5)]), MapPart.type.SOLID));
+G.map.addMapPart(new MapPart(new Polygon([new Point(9, 10), new Point(9, 3), new Point(10, 5)]), MapPart.type.SOLID));
 
 var portalContext = new PortalContext();
 
@@ -93,8 +79,8 @@ var drawPortalMap = function(portal, playerPosition, howMany) {
    }
    if (drawing) {
       G.ctx.clearRect(-G.edgeOfLevel, -G.edgeOfLevel, G.edgeOfLevel * 2, G.edgeOfLevel * 2);
-      for (var i = 0; i < G.map.length; i++) {
-         G.map[i].draw(G.ctx);
+      for (var i = 0; i < G.map.mapParts.length; i++) {
+         G.map.mapParts[i].draw(G.ctx);
       }
       if (portal.calcs.drawAnotherPortal) {
          drawPortalMap(portal, portal.calcs.invPortalMatrix.transform(playerPosition), howMany - 1);
@@ -225,14 +211,12 @@ function start() {
    }
 
    Util.setTransform(G.ctx, Matrix.createTranslationMatrix(G.width / 2, G.height / 2).rotate(angle).scale(scalex * enlarge, -scaley * enlarge).translate(-G.player.position.x, -G.player.position.y));
-   for (var i = 0; i < G.map.length; i++) {
-      G.map[i].draw(G.ctx);
-   }
-
+   G.map.draw(G.ctx);
+   
    G.player.rotation = -angle;
 
    if (portalContext.bothPortals()) {
-      var howMany = 2;
+      var howMany = 1;
       portalContext.calculatePortal(0, G.player.position);
       portalContext.calculatePortal(1, G.player.position);
       if (portalContext.portals[0].calcs.dist < portalContext.portals[1].calcs.dist) {
@@ -266,25 +250,6 @@ function start() {
 
    input.resetMouseButtons();
 
-
-
-
-//   var newTime = new Date().getTime();
-//   world.step((newTime - time) / 1000);
-//   time = newTime;
-
-//   G.ctx.beginPath();
-//   G.ctx.arc(circleBody.position[0], circleBody.position[1], 1, 0, 2 * Math.PI);
-//   G.ctx.fillStyle = '#fff';
-//   G.ctx.fill();
-
-//   if (Math.random() < 0.05) {
-
-
-
-      //console.log("Circle y position: " + circleBody.position[1]);
-      //console.log("rect: " + rectBody.position[1]);
-//   }
    G.ctx.restore();
    requestAnimFrame(start);
 }
