@@ -174,7 +174,7 @@ function start() {
 
 
    if (G.easeAngle === null && G.easeScalex === null && G.easeScaley === null) {
-      var portalEndpoints = PortalContext.getPortalPlaceholder(G.player.position.clone(), mousePos.clone(), G.map);
+      var portalEndpoints = Portal.getPortalPlaceholder(G.player.position.clone(), mousePos.clone(), G.map);
       if (portalEndpoints) {
          if (input.isMBLeft()) {
 
@@ -212,7 +212,7 @@ function start() {
 
    Util.setTransform(G.ctx, Matrix.createTranslationMatrix(G.width / 2, G.height / 2).rotate(angle).scale(scalex * enlarge, -scaley * enlarge).translate(-G.player.position.x, -G.player.position.y));
    G.map.draw(G.ctx);
-   
+
    G.player.rotation = -angle;
 
    if (portalContext.bothPortals()) {
@@ -236,7 +236,10 @@ function start() {
    if (portalEndpoints) {
       var prt = new Portal(portalEndpoints, -1, '#fff');
       prt.draw(G.ctx);
+      Util.drawLine(G.ctx, [G.player.position, portalEndpoints[0]], 0.1, '#fff');
+      Util.drawLine(G.ctx, [G.player.position, portalEndpoints[1]], 0.1, '#fff');
    }
+   Util.drawLine(G.ctx, [G.player.position, mousePos], 0.1, '#fff');
    if (G.easeAngle === null && G.easeScalex === null && G.easeScaley === null) {
       Util.fillRect(G.ctx, mousePos.x - 0.1, mousePos.y - 0.1, 0.2, 0.2, '#f0f');
    }

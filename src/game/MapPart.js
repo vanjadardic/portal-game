@@ -15,10 +15,12 @@ function MapPart(polygon, type) {
  */
 MapPart.type = {
    SOLID: {
-      color: '#888'
+      color: '#888',
+      supportsPortal: true
    },
    EMPTY: {
-      color: '#000'
+      color: '#000',
+      supportsPortal: false
    }
 };
 
