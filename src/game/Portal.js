@@ -45,7 +45,7 @@ Portal.prototype.draw = function(ctx) {
  * @param {Point} playerPosition
  * @param {Point} mousePosition
  * @param {Map} map
- * @returns {Point[2]|Boolean} Two endpoints of a {@link Portal}, or false if it can't be created at this position.
+ * @returns {Point[]|Boolean} Two endpoints of a {@link Portal}, or false if it can't be created at this position.
  */
 Portal.getPortalPlaceholder = function(playerPosition, mousePosition, map) {
    var playerHalfLine = new LineSegment(playerPosition, mousePosition);
@@ -86,7 +86,7 @@ Portal.getPortalPlaceholder = function(playerPosition, mousePosition, map) {
    var portalEndpoints = intersectCLS(new Circle(portalCenter.x, portalCenter.y, Portal.default.size / 2), mapLineSegment);
    // portal can't be created at this position (it's too close to the edge)
    if (!portalEndpoints || portalEndpoints.length !== 2) {
-      return;
+      return false;
    }
 
    // check if the portal intersects with some other map part
@@ -99,7 +99,7 @@ Portal.getPortalPlaceholder = function(playerPosition, mousePosition, map) {
          if (mapLineSegment !== map.mapParts[i].polygon.getLineSegments()[j]) {
             var poi = intersectLSLS(portalLineSegment, map.mapParts[i].polygon.getLineSegments()[j]);
             if (poi !== false) {
-               return;
+               return false;
             }
          }
       }

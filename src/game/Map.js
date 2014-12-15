@@ -9,8 +9,8 @@ function Map(mapParts) {
 }
 
 /**
- * Adds a {@link MapPart} to this {@Map}.
- * @param {type} mapPart
+ * Adds a {@link MapPart} to this {@link Map}.
+ * @param {MapPart} mapPart
  */
 Map.prototype.addMapPart = function (mapPart) {
    this.mapParts.push(mapPart);

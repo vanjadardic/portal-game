@@ -9,9 +9,15 @@
  * @param {Number} y The y coordinate.
  */
 function Point(x, y) {
-   /** The x coordinate. @type {Number} */
+   /**
+    * The x coordinate.
+    * @type {Number}
+    */
    this.x = x;
-   /** The y coordinate. @type {Number} */
+   /**
+    * The y coordinate.
+    * @type {Number}
+    */
    this.y = y;
 }
 
@@ -53,11 +59,20 @@ Point.prototype.almostEquals = function(otherPoint, e) {
  * @param {Number} c The c coefficient.
  */
 function Line(a, b, c) {
-   /** The a coefficient. @type Number */
+   /**
+    * The a coefficient.
+    * @type Number
+    */
    this.a = a;
-   /** The b coefficient. @type Number */
+   /**
+    * The b coefficient.
+    * @type Number
+    */
    this.b = b;
-   /** The c coefficient. @type Number */
+   /**
+    * The c coefficient.
+    * @type Number
+    */
    this.c = c;
 }
 
@@ -95,9 +110,15 @@ Line.prototype.clone = function() {
  * @param {Point} point2 Second point.
  */
 function LineSegment(point1, point2) {
-   /** First point. @type {Point} */
+   /**
+    * First point.
+    * @type {Point}
+    */
    this.point1 = point1;
-   /** Second point. @type {Point} */
+   /**
+    * Second point.
+    * @type {Point}
+    */
    this.point2 = point2;
 }
 
@@ -180,7 +201,10 @@ LineSegment.prototype.createSquare = function(orientation) {
  * @param {Point[]} points Points that represent the polygon.
  */
 function Polygon(points) {
-   /** Points that represent the polygon. @type {Point[]} */
+   /**
+    * Points that represent the polygon.
+    * @type {Point[]}
+    */
    this.points = points;
 }
 
