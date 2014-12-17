@@ -41,7 +41,7 @@ Portal.prototype.draw = function(ctx) {
 };
 
 /**
- * Checks if the {@link Portal} can be created at current player and mouse positions.
+ * Checks if the {@link Portal} can be created at current {@link Player} and mouse positions.
  * @param {Point} playerPosition
  * @param {Point} mousePosition
  * @param {Map} map

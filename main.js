@@ -58,8 +58,8 @@ var drawPortalMap = function(portal, playerPosition, howMany) {
    var portalLines = [];
    if (portal.calcs.playerSide >= 0) {
       for (var i = 0; i < 2; i++) {
-         if (portal.calcs.ls[i] !== null) {
-            portalLines.push([portal.calcs.ls[i].point1, portal.calcs.ls[i].point2]);
+         if (portal.calcs.viewportLimit[i] !== null) {
+            portalLines.push([portal.calcs.viewportLimit[i].point1, portal.calcs.viewportLimit[i].point2]);
          }
       }
    }
@@ -219,7 +219,7 @@ function start() {
       var howMany = 1;
       portalContext.calculatePortal(0, G.player.position);
       portalContext.calculatePortal(1, G.player.position);
-      if (portalContext.portals[0].calcs.dist < portalContext.portals[1].calcs.dist) {
+      if (portalContext.portals[0].calcs.playerDistance < portalContext.portals[1].calcs.playerDistance) {
          drawPortalMap(portalContext.portals[1], G.player.position, howMany);
          drawPortalMap(portalContext.portals[0], G.player.position, howMany);
       } else {

@@ -547,3 +547,7 @@ function intersectCLS(circle, lineSegment) {
    }
    return poi.length > 0 ? poi : false;
 }
+
+function checkParallel(line1, line2) {
+   return Util.compareFloats(line1.a * line2.b, line2.a * line1.b) === 0;
+}
