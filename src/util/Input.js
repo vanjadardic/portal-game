@@ -1,23 +1,27 @@
 'use strict';
 
+/**
+ * @param {String} canvasId
+ * @constructor
+ */
 function Input(canvasId) {
    var me = this;
-   me.resetKeys();
+   me.keys = {};
+   me.mouse = {};
    document.addEventListener('keydown', function(e) {
-      me.pressedK[e.keyCode] = true;
+      me.keys[e.keyCode] = true;
    }, true);
    document.addEventListener('keyup', function(e) {
-      me.pressedK[e.keyCode] = false;
+      me.keys[e.keyCode] = false;
    }, true);
-   me.resetMouseButtons();
    window.addEventListener('contextmenu', function(e) {
       e.preventDefault();
    }, true);
    document.addEventListener('mousedown', function(e) {
-      me.pressedM[e.which] = true;
+      me.mouse[e.which] = true;
    }, true);
    document.addEventListener('mouseup', function(e) {
-      me.pressedM[e.which] = false;
+      me.mouse[e.which] = false;
    }, true);
    me.canvasOffset = {x: 0, y: 0};
    me.mouse = {x: 0, y: 0};
@@ -32,41 +36,56 @@ function Input(canvasId) {
    }, true);
 }
 
-Input.keyCodes = {
-   W: 87,
-   A: 65,
-   S: 83,
-   D: 68
+/**
+ * Controls for the game.
+ */
+Input.codes = {
+   UP: 87, ///// W
+   LEFT: 65, /// A
+   DOWN: 83, /// S
+   RIGHT: 68, // D
+   FIRE1: 1, /// left mouse
+   FIRE2: 3 //// right mouse
 };
 
+/**
+ * @returns {Boolean}
+ */
 Input.prototype.isUp = function() {
-   return !!this.pressedK[Input.keyCodes.W];
+   return !!this.keys[Input.codes.UP];
 };
 
+/**
+ * @returns {Boolean}
+ */
 Input.prototype.isLeft = function() {
-   return !!this.pressedK[Input.keyCodes.A];
+   return !!this.keys[Input.codes.LEFT];
 };
 
+/**
+ * @returns {Boolean}
+ */
 Input.prototype.isDown = function() {
-   return !!this.pressedK[Input.keyCodes.S];
+   return !!this.keys[Input.codes.DOWN];
 };
 
+/**
+ * @returns {Boolean}
+ */
 Input.prototype.isRight = function() {
-   return !!this.pressedK[Input.keyCodes.D];
+   return !!this.keys[Input.codes.RIGHT];
 };
 
-Input.prototype.resetKeys = function() {
-   this.pressedK = {};
+/**
+ * @returns {Boolean}
+ */
+Input.prototype.isFire1 = function() {
+   return !!this.mouse[Input.codes.FIRE1];
 };
 
-Input.prototype.isMBLeft = function() {
-   return !!this.pressedM[1];
-};
-
-Input.prototype.isMBRight = function() {
-   return !!this.pressedM[3];
-};
-
-Input.prototype.resetMouseButtons = function() {
-   this.pressedM = {};
+/**
+ * @returns {Boolean}
+ */
+Input.prototype.isFire2 = function() {
+   return !!this.mouse[Input.codes.FIRE2];
 };

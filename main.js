@@ -176,12 +176,12 @@ function start() {
    if (G.easeAngle === null && G.easeScalex === null && G.easeScaley === null) {
       var portalEndpoints = Portal.getPortalPlaceholder(G.player.position.clone(), mousePos.clone(), G.map);
       if (portalEndpoints) {
-         if (input.isMBLeft()) {
+         if (input.isFire1()) {
 
             portalContext.setPortal(0, portalEndpoints, G.player.position);
 
          }
-         if (input.isMBRight()) {
+         if (input.isFire2()) {
             portalContext.setPortal(1, portalEndpoints, G.player.position);
 
          }
