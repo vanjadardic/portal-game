@@ -1,9 +1,9 @@
 'use strict';
 
 /**
+ * @class
  * @param {Number} x
  * @param {Number} y
- * @constructor
  */
 function Player(x, y) {
    this.position = new Point(x, y);

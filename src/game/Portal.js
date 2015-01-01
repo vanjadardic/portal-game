@@ -1,10 +1,10 @@
 'use strict';
 
 /**
+ * @class
  * @param {Point[]} points Endpoints of a portal.
  * @param {Number} id Identificator of the portal, 0 for blue, 1 for yellow.
  * @param {String} color Override default color for this type of portal.
- * @constructor
  */
 function Portal(points, id, color) {
    this.points = points;

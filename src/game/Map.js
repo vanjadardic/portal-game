@@ -1,8 +1,8 @@
 'use strict';
 
 /**
+ * @class
  * @param {MapPart} mapParts Array of {@link MapPart}s to initialize this {@link Map} with. Can be empty.
- * @constructor
  */
 function Map(mapParts) {
    this.mapParts = mapParts || [];

@@ -1,8 +1,8 @@
 'use strict';
 
 /**
+ * @class Class for monitoring keyboard and mouse input states.
  * @param {String} canvasId
- * @constructor
  */
 function Input(canvasId) {
    var me = this;
@@ -49,43 +49,73 @@ Input.codes = {
 };
 
 /**
+ * @param {Boolean} [reset]
  * @returns {Boolean}
  */
-Input.prototype.isUp = function() {
-   return !!this.keys[Input.codes.UP];
+Input.prototype.isUp = function(reset) {
+   var val = !!this.keys[Input.codes.UP];
+   if (reset) {
+      this.keys[Input.codes.UP] = false;
+   }
+   return val;
 };
 
 /**
+ * @param {Boolean} [reset]
  * @returns {Boolean}
  */
-Input.prototype.isLeft = function() {
-   return !!this.keys[Input.codes.LEFT];
+Input.prototype.isLeft = function(reset) {
+   var val = !!this.keys[Input.codes.LEFT];
+   if (reset) {
+      this.keys[Input.codes.LEFT] = false;
+   }
+   return val;
 };
 
 /**
+ * @param {Boolean} [reset]
  * @returns {Boolean}
  */
-Input.prototype.isDown = function() {
-   return !!this.keys[Input.codes.DOWN];
+Input.prototype.isDown = function(reset) {
+   var val = !!this.keys[Input.codes.DOWN];
+   if (reset) {
+      this.keys[Input.codes.DOWN] = false;
+   }
+   return val;
 };
 
 /**
+ * @param {Boolean} [reset]
  * @returns {Boolean}
  */
-Input.prototype.isRight = function() {
-   return !!this.keys[Input.codes.RIGHT];
+Input.prototype.isRight = function(reset) {
+   var val = !!this.keys[Input.codes.RIGHT];
+   if (reset) {
+      this.keys[Input.codes.RIGHT] = false;
+   }
+   return val;
 };
 
 /**
+ * @param {Boolean} [reset]
  * @returns {Boolean}
  */
-Input.prototype.isFire1 = function() {
-   return !!this.mouse[Input.codes.FIRE1];
+Input.prototype.isFire1 = function(reset) {
+   var val = !!this.mouse[Input.codes.FIRE1];
+   if (reset) {
+      this.mouse[Input.codes.FIRE1] = false;
+   }
+   return val;
 };
 
 /**
+ * @param {Boolean} [reset]
  * @returns {Boolean}
  */
-Input.prototype.isFire2 = function() {
-   return !!this.mouse[Input.codes.FIRE2];
+Input.prototype.isFire2 = function(reset) {
+   var val = !!this.mouse[Input.codes.FIRE2];
+   if (reset) {
+      this.mouse[Input.codes.FIRE2] = false;
+   }
+   return val;
 };

@@ -1,9 +1,9 @@
 'use strict';
 
 /**
+ * @class
  * @param {Polygon} polygon {@link Polygon} that represents this map part.
  * @param {Object} type Type of the map part. Should be an object from {@link MapPart.type}.
- * @constructor
  */
 function MapPart(polygon, type) {
    this.polygon = polygon;

@@ -176,12 +176,12 @@ function start() {
    if (G.easeAngle === null && G.easeScalex === null && G.easeScaley === null) {
       var portalEndpoints = Portal.getPortalPlaceholder(G.player.position.clone(), mousePos.clone(), G.map);
       if (portalEndpoints) {
-         if (input.isFire1()) {
+         if (input.isFire1(true)) {
 
             portalContext.setPortal(0, portalEndpoints, G.player.position);
 
          }
-         if (input.isFire2()) {
+         if (input.isFire2(true)) {
             portalContext.setPortal(1, portalEndpoints, G.player.position);
 
          }
@@ -250,8 +250,6 @@ function start() {
    //Util.setTransform(G.ctx, Matrix.createTranslationMatrix(G.width/2 - G.player.position.x, G.height/2 - G.player.position.y));
    G.player.rotation = 0;
    G.player.draw(G.ctx);
-
-   input.resetMouseButtons();
 
    G.ctx.restore();
    requestAnimFrame(start);

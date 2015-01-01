@@ -1,8 +1,7 @@
 'use strict';
 
 /**
- * Creates and keeps track of the 2 {@link Portal}s.
- * @constructor
+ * @class Keeps track of the 2 {@link Portal|Portals}.
  */
 function PortalContext() {
    this.portals = [null, null];

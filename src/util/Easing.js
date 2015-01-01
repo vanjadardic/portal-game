@@ -1,11 +1,11 @@
 'use strict';
 
 /**
+ * @class Changes the value from offset to offset + length in accordance to the {@link Easing.fnc|easing function}.
  * @param {function} [fnc=Easing.fnc.easeInExpo] Easing function to use. Should be a function from {@link Easing.fnc}.
  * @param {Number} [offset=0] Starting value for easing.
  * @param {Number} [length=100] Length of the easing. The final value will be offset + length.
  * @param {Number} [duration=500] Duration of the easing.
- * @constructor
  */
 function Easing(fnc, offset, length, duration) {
    this.fnc = fnc === undefined ? Easing.default.fnc : fnc;
